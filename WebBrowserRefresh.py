@@ -1,4 +1,5 @@
-import webbrowser
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
 import time
 import winsound
 
@@ -14,16 +15,22 @@ def play_sound():
     duration = 1000  # Set the duration of the beep sound in milliseconds
     winsound.Beep(frequency, duration)
 
-# Main loop that refreshes the page and plays the sound
+# Open a new window and navigate to the web page
+driver = webdriver.Chrome()
+driver.execute_script("window.open('" + url + "', '_blank');")
+driver.switch_to.window(driver.window_handles[-1])
+
+# Main loop that refreshes the page and displays it
 while True:
-    # Open the web page
-    webbrowser.open(url, new=0, autoraise=True)
-    
     # Wait for the refresh interval
     time.sleep(refresh_interval)
     
     # Refresh the page
-    webbrowser.refresh()
+    driver.refresh()
     
     # Play the sound to indicate that the page has been refreshed
     play_sound()
+
+    # Switch to the new window and display the refreshed page
+    driver.switch_to.window(driver.window_handles[-1])
+    driver.find_element_by_tag_name('body').send_keys(Keys.F5)
