@@ -6,7 +6,7 @@ import winsound
 url = "https://my.wgu.edu/degree-plan"
 
 # Set the refresh interval in seconds
-refresh_interval = 900  # 15 minutes in seconds
+refresh_interval = 60  # 15 minutes in seconds
 
 # Play a beep sound to indicate that the page has been refreshed
 def play_sound():
