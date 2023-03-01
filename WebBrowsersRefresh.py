@@ -1,7 +1,6 @@
 import webbrowser
 import time
 import winsound
-import threading
 import tkinter as tk
 
 # Set the URL you want to refresh
@@ -18,55 +17,59 @@ def play_sound():
     duration = 1000  # Set the duration of the beep sound in milliseconds
     winsound.Beep(frequency, duration)
 
-
-# Create the timer window
-timer_window = tk.Tk()
-timer_window.title("Page Refresh Timer")
-
-# Create the timer label
-timer_label = tk.Label(
-    timer_window, text="Refresh in: --:--", font=("Arial", 16))
-timer_label.pack()
-
-# Define the time_left variable
-time_left = 0
-
-# Function to update the timer label
+# Update the timer label
 
 
 def update_timer_label():
     global time_left
-    while timer_running:
+    time_left -= 1
+    if time_left >= 0:
         timer_label.config(text="Refresh in: " +
-                           time.strftime("%M:%S", time.gmtime(time_left)))
-        time.sleep(1)
-        if time_left <= 0:
-            break
-        else:
-            time_left -= 1
-    timer_label.config(text="Refresh in: --:--")
+                           time.strftime('%M:%S', time.gmtime(time_left)))
+        timer_label.after(1000, update_timer_label)
+    else:
+        timer_label.config(text="Refreshing...")
+        refresh()
+
+# Refresh the web page
 
 
-# Main loop that refreshes the page and plays the sound
-while True:
-    # Open the web page
+def refresh():
     webbrowser.open(url, new=0, autoraise=True)
-
-    # Start the timer thread
-    timer_running = True
-    time_left = refresh_interval
-    timer_thread = threading.Thread(target=update_timer_label)
-    timer_thread.start()
-
-    # Wait for the refresh interval
-    time.sleep(refresh_interval)
-    timer_running = False
-
-    # Refresh the page
-    webbrowser.refresh()
-
-    # Play the sound to indicate that the page has been refreshed
     play_sound()
+    global time_left
+    time_left = refresh_interval
+    timer_label.after(0, update_timer_label)
 
-# Start the main loop of the timer window
-timer_window.mainloop()
+
+# Check if the appropriate drivers are installed
+driver_installed = True  # Assume the driver is installed
+# Add your code here to check if the driver is installed
+# Set driver_installed to False if the driver is not installed
+
+# If the driver is not installed, display a prompt to install the driver
+if not driver_installed:
+    install_driver = tk.messagebox.askyesno("Driver not installed",
+                                            "The appropriate drivers are not installed. Would you like to install them?")
+    if install_driver:
+        # Add your code here to install the driver
+        pass
+    else:
+        exit()
+
+# Create the Tkinter GUI
+root = tk.Tk()
+root.title("Web Page Refresh")
+
+# Create the timer label
+time_left = refresh_interval
+timer_label = tk.Label(root, text="Refresh in: " +
+                       time.strftime('%M:%S', time.gmtime(time_left)))
+timer_label.pack()
+
+# Create the refresh button
+refresh_button = tk.Button(root, text="Refresh", command=refresh)
+refresh_button.pack()
+
+# Start the GUI main loop
+root.mainloop()
