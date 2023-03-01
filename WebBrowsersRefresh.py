@@ -3,7 +3,7 @@ import time
 import winsound
 
 # Set the URL you want to refresh
-url = "https://www.example.com/"
+url = "https://my.wgu.edu/degree-plan"
 
 # Set the refresh interval in seconds
 refresh_interval = 900  # 15 minutes in seconds
