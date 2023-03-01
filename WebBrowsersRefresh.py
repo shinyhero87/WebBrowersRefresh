@@ -28,10 +28,14 @@ timer_label = tk.Label(
     timer_window, text="Refresh in: --:--", font=("Arial", 16))
 timer_label.pack()
 
+# Define the time_left variable
+time_left = 0
+
 # Function to update the timer label
 
 
 def update_timer_label():
+    global time_left
     while timer_running:
         timer_label.config(text="Refresh in: " +
                            time.strftime("%M:%S", time.gmtime(time_left)))
