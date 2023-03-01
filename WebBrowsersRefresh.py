@@ -18,6 +18,16 @@ def play_sound():
     duration = 1000  # Set the duration of the beep sound in milliseconds
     winsound.Beep(frequency, duration)
 
+
+# Create the timer window
+timer_window = tk.Tk()
+timer_window.title("Page Refresh Timer")
+
+# Create the timer label
+timer_label = tk.Label(
+    timer_window, text="Refresh in: --:--", font=("Arial", 16))
+timer_label.pack()
+
 # Function to update the timer label
 
 
@@ -53,15 +63,6 @@ while True:
 
     # Play the sound to indicate that the page has been refreshed
     play_sound()
-
-# Create the timer window
-timer_window = tk.Tk()
-timer_window.title("Page Refresh Timer")
-
-# Create the timer label
-timer_label = tk.Label(
-    timer_window, text="Refresh in: --:--", font=("Arial", 16))
-timer_label.pack()
 
 # Start the main loop of the timer window
 timer_window.mainloop()
